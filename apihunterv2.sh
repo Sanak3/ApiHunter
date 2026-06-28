@@ -144,8 +144,8 @@ echo -e "${DARK_RED}[*] 9 - Extracting IDs & JWT Tokens from responses...${NC}"
 if [ -s all_endpoints.txt ]; then
     head -n 50 all_endpoints.txt | while read -r url; do
         resp=$(curl -s --max-time 5 "$url" 2>/dev/null)
-        echo "$resp" | grep -Po '"(id|userId|accountId|invoiceId|projectId|orderId|orgId)"\s*:\s*"[^"]+"' >> id_candidates.txt
-        echo "$resp" | grep -Po 'eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+' >> jwt_tokens.txt
+        echo "$resp" | grep -oE '"(id|userId|accountId|invoiceId|projectId|orderId|orgId)"[[:space:]]*:[[:space:]]*"[^"]+"' >> id_candidates.txt
+        echo "$resp" | grep -oE 'eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+' >> jwt_tokens.txt
     done
 fi
 
